@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PhonePe Sprint 2 Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell app-shell--auth">
+      <header class="app-header" id="appHeader">
+        <button class="back-button" id="backButton" aria-label="Go back">←</button>
+        <div class="app-header__brand">
+          <div class="app-badge">P</div>
+          <div>
+            <p class="app-header__title">PhonePe</p>
+            <p class="app-header__subtitle">Simplify payments</p>
+          </div>
+        </div>
+        <button class="icon-button" aria-label="notifications">🔔</button>
+      </header>
+
+      <main class="app-main" id="mainContent">
+        <!-- LOGIN -->
+        <section class="screen login-screen" data-screen="login">
+          <div class="login-hero">
+            <p class="badge">New to PhonePe?</p>
+            <h1>Payments made easy.</h1>
+            <p>Login with your mobile number and complete UPI setup in seconds.</p>
+          </div>
+
+          <section class="card login-card">
+            <label class="input-field">
+              <span class="input-field__label">Mobile number</span>
+              <span class="input-field__control has-prefix">
+                <span class="input-field__prefix prefix-code">+91</span>
+                <input
+                  id="mobileInput"
+                  type="tel"
+                  maxlength="10"
+                  inputmode="numeric"
+                  placeholder="Enter 10-digit number"
+                />
+              </span>
+              <span class="input-field__helper" id="mobileHelper">
+                Enter a valid 10-digit number.
+              </span>
+            </label>
+
+            <div class="login-actions">
+              <button class="btn btn--primary btn--full" id="otpButton" disabled>
+                Get OTP
+              </button>
+              <p class="validation-text">
+                By continuing, you accept the <span class="link">Terms & Privacy Policy</span>.
+              </p>
+            </div>
+
+            <div class="otp-section" id="otpSection">
+              <p class="otp-title">Enter OTP</p>
+              <div class="otp-input" id="otpInputs">
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+                <input type="text" inputmode="numeric" maxlength="1" disabled />
+              </div>
+              <div class="otp-actions">
+                <button class="btn btn--secondary" id="verifyButton" disabled>
+                  Verify OTP
+                </button>
+                <button class="link-button" id="resendButton" disabled>
+                  Resend OTP in 28s
+                </button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section class="screen hidden" data-screen="dashboard">
+          <section class="screen__section">
+            <p class="eyebrow">Good evening, Yash 👋</p>
+            <h2>Here’s what’s new today</h2>
+          </section>
+
+          <section class="wallet-card">
+            <div class="wallet-card__meta">
+              <p class="wallet-card__label">Wallet Balance</p>
+              <p class="wallet-card__value" id="walletBalance">₹0.00</p>
+              <p class="wallet-card__upi" id="walletUpiId">user@upi</p>
+            </div>
+            <div class="wallet-card__status">
+              <span class="wallet-card__status-dot"></span>
+              <span>Updated just now</span>
+            </div>
+          </section>
+
+          <section class="card card--shadow">
+            <header class="card__header">
+              <div>
+                <p class="card__title">Quick Actions</p>
+                <p class="card__subtitle">Frequently used shortcuts</p>
+              </div>
+            </header>
+            <div class="quick-actions" id="quickActions"></div>
+          </section>
+
+          <section class="card card--shadow">
+            <header class="card__header">
+              <div>
+                <p class="card__title">Services</p>
+                <p class="card__subtitle">Everything you need in one place</p>
+              </div>
+              <button class="link-button" type="button">See all</button>
+            </header>
+            <div class="services-grid" id="servicesGrid"></div>
+          </section>
+        </section>
+
+        <!-- UPI SETUP MULTI-STAGE -->
+        <section class="screen hidden" data-screen="upi-setup">
+          <section class="screen__section">
+            <p class="eyebrow">UPI Setup</p>
+            <h2>Complete your bank linking</h2>
+            <p class="subtitle">3 quick steps to generate your PhonePe UPI ID.</p>
+          </section>
+
+          <section class="card card--shadow">
+            <header class="card__header">
+              <div>
+                <p class="card__title">Progress</p>
+                <p class="card__subtitle">Select bank → Verify → Ready</p>
+              </div>
+              <span class="pill" id="setupStageLabel">Step 1 of 3</span>
+            </header>
+            <div class="setup-progress">
+              <div class="setup-progress__step" data-step-indicator="1">
+                <span>1</span>
+                <p>Select bank</p>
+              </div>
+              <div class="setup-progress__step" data-step-indicator="2">
+                <span>2</span>
+                <p>Verify</p>
+              </div>
+              <div class="setup-progress__step" data-step-indicator="3">
+                <span>3</span>
+                <p>UPI ID</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card card--shadow" id="upsStepContainer">
+            <!-- dynamic content -->
+          </section>
+        </section>
+
+        <!-- TRANSACTION HISTORY -->
+        <section class="screen hidden" data-screen="history">
+          <section class="screen__section history-header">
+            <div>
+              <p class="eyebrow">History</p>
+              <h2>Past transactions</h2>
+              <p class="subtitle">Tap a row to view more context.</p>
+            </div>
+            <button class="btn btn--ghost" data-nav-target="status">View Status</button>
+          </section>
+
+          <section class="card card--shadow">
+            <header class="card__header">
+              <div>
+                <p class="card__title">Filter</p>
+              </div>
+              <button class="link-button" type="button" id="clearFilterButton">Reset</button>
+            </header>
+            <div class="filter-groups">
+              <div>
+                <p class="filter-label">Date</p>
+                <div class="filter-chips" id="dateFilters"></div>
+              </div>
+              <div>
+                <p class="filter-label">Type</p>
+                <div class="filter-chips" id="typeFilters"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card card--shadow">
+            <header class="card__header">
+              <div>
+                <p class="card__title">Transactions</p>
+              </div>
+            </header>
+            <div class="transaction-list" id="transactionList"></div>
+          </section>
+        </section>
+
+        <!-- SEND MONEY FLOW -->
+        <section class="screen hidden" data-screen="send-upi">
+          <section class="screen__section">
+            <p class="eyebrow">Send money</p>
+            <h2>Enter recipient UPI ID</h2>
+          </section>
+          <section class="card card--shadow form-card">
+            <label class="input-field">
+              <span class="input-field__label">UPI ID or Mobile</span>
+              <span class="input-field__control">
+                <input id="sendUpiInput" type="text" placeholder="example@ybl" />
+              </span>
+              <span class="input-field__helper">UPI ID is case insensitive.</span>
+            </label>
+            <button class="btn btn--primary btn--full" id="sendUpiNext" disabled>
+              Continue
+            </button>
+          </section>
+        </section>
+
+        <section class="screen hidden" data-screen="send-amount">
+          <section class="screen__section">
+            <p class="eyebrow">Send money</p>
+            <h2>Enter amount</h2>
+            <p class="subtitle" id="sendAmountSubtitle"></p>
+          </section>
+          <section class="card card--shadow form-card">
+            <label class="input-field amount-field">
+              <span class="input-field__label">Amount</span>
+              <span class="input-field__control">
+                <span class="currency">₹</span>
+                <input id="sendAmountInput" type="number" min="1" max="100000" placeholder="0.00" />
+              </span>
+              <span class="input-field__helper">Limit ₹1,00,000 per transaction.</span>
+            </label>
+            <button class="btn btn--primary btn--full" id="sendAmountNext" disabled>
+              Review
+            </button>
+          </section>
+        </section>
+
+        <section class="screen hidden" data-screen="send-confirm">
+          <section class="screen__section">
+            <p class="eyebrow">Confirm payment</p>
+            <h2>Review & send</h2>
+          </section>
+          <section class="card card--shadow confirmation-card" id="sendConfirmCard">
+            <!-- dynamic confirmation -->
+          </section>
+          <button class="btn btn--primary btn--full" id="sendConfirmButton">Send now</button>
+          <button class="link-button" id="sendEditButton">Edit details</button>
+        </section>
+
+        <!-- REQUEST MONEY FLOW -->
+        <section class="screen hidden" data-screen="request-upi">
+          <section class="screen__section">
+            <p class="eyebrow">Request money</p>
+            <h2>Who are you requesting?</h2>
+          </section>
+          <section class="card card--shadow form-card">
+            <label class="input-field">
+              <span class="input-field__label">Payer UPI ID</span>
+              <span class="input-field__control">
+                <input id="requestUpiInput" type="text" placeholder="friend@upi" />
+              </span>
+            </label>
+            <button class="btn btn--primary btn--full" id="requestUpiNext" disabled>
+              Continue
+            </button>
+          </section>
+        </section>
+
+        <section class="screen hidden" data-screen="request-amount">
+          <section class="screen__section">
+            <p class="eyebrow">Request money</p>
+            <h2>Enter amount</h2>
+            <p class="subtitle" id="requestAmountSubtitle"></p>
+          </section>
+          <section class="card card--shadow form-card">
+            <label class="input-field amount-field">
+              <span class="input-field__label">Amount</span>
+              <span class="input-field__control">
+                <span class="currency">₹</span>
+                <input id="requestAmountInput" type="number" min="1" max="100000" placeholder="0.00" />
+              </span>
+            </label>
+            <button class="btn btn--primary btn--full" id="requestAmountNext" disabled>
+              Review
+            </button>
+          </section>
+        </section>
+
+        <section class="screen hidden" data-screen="request-confirm">
+          <section class="screen__section">
+            <p class="eyebrow">Request summary</p>
+            <h2>Ready to notify</h2>
+          </section>
+          <section class="card card--shadow confirmation-card" id="requestConfirmCard"></section>
+          <button class="btn btn--primary btn--full" id="requestConfirmButton">
+            Send request
+          </button>
+          <button class="link-button" id="requestEditButton">Edit details</button>
+        </section>
+
+        <!-- TRANSACTION STATUS -->
+        <section class="screen hidden" data-screen="status">
+          <section class="screen__section">
+            <p class="eyebrow">Status center</p>
+            <h2>Track your payments</h2>
+          </section>
+          <section class="card card--shadow status-card" id="statusCard">
+            <!-- dynamic status -->
+          </section>
+          <button class="btn btn--primary btn--full" id="statusRetryButton">Retry payment</button>
+          <button class="link-button" data-nav-target="history">View history</button>
+        </section>
+
+        <!-- PROFILE PLACEHOLDER -->
+        <section class="screen hidden" data-screen="profile">
+          <section class="screen__section">
+            <p class="eyebrow">Coming soon</p>
+            <h2>Profile & settings</h2>
+            <p class="subtitle">Will be covered in a later sprint.</p>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav__item" data-nav="dashboard">
+          <span class="bottom-nav__icon">🏠</span>
+          <span>Home</span>
+        </button>
+        <button class="bottom-nav__item" data-nav="upi-setup">
+          <span class="bottom-nav__icon">💳</span>
+          <span>UPI</span>
+        </button>
+        <button class="bottom-nav__item" data-nav="history">
+          <span class="bottom-nav__icon">🕒</span>
+          <span>History</span>
+        </button>
+        <button class="bottom-nav__item" data-nav="profile">
+          <span class="bottom-nav__icon">👤</span>
+          <span>Profile</span>
+        </button>
+      </nav>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
